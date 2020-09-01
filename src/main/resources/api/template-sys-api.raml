@@ -1,0 +1,40 @@
+#%RAML 1.0
+title: template-sys-api
+version: 1.0
+description: Sample Sys API
+
+documentation:
+  - !include documentations/documentation.raml
+
+uses:
+  library: libraries/library.raml
+
+/sample:
+  get:
+    description: Return a standard response.
+    is: [
+      library.client-credentials,
+      library.correlationId,
+      library.pagination,
+      library.standardResponse: {
+        outputType: library.get-response,
+        outputExample: !include examples/get-response.json
+      } 
+    ]
+  post:
+    description: Return a standard response.
+    is: [
+      library.client-credentials,
+      library.contentType,
+      library.correlationId,
+      library.standardRequestResponse: {
+        statusCode: 201,
+        inputType: library.post-request,
+        inputExample: !include examples/post-request.json,
+        outputType: library.post-response, 
+        outputExample: !include examples/post-response.json
+      }
+    ]
+
+/availability:
+  type: library.availabilityCheckerEndpoint

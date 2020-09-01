@@ -1,0 +1,22 @@
+
+    {
+        "host": "products.db2.org",
+        "numberOfProbs": 3,
+        "port": 8093,
+        "probes": [
+            {
+                "message": "Fatal error: Connection refused: connect",
+                "probNumber": 1
+            },
+            {
+                "message": "Fatal error: Connection refused: connect",
+                "probNumber": 2
+            },
+            {
+                "message": "Fatal error: Connection refused: connect",
+                "probNumber": 3
+            }
+        ],
+        "dependentEndpointType": "SOCKET",
+        "dependentEndpointName": "DB2Database"
+    }

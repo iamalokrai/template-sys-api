@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
+	
+	<http:listener-config name="template-sys-api-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="${http.private.port}" />
+    </http:listener-config>
+    <apikit:config name="template-sys-api-config" api="template-sys-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+	<configuration-properties doc:name="Configuration properties" doc:id="349f4278-d86f-419e-8b85-998db6c764d4" file="config/${env}/template-sys-api-${env}.yaml" doc:description="Deployment Specific Properties
+"/>
+	<configuration-properties doc:name="Configuration properties" doc:id="2da29103-5e5d-48fd-96a4-f1b6240068a8" doc:description="Common Properties
+" file="config/template-sys-api-common.yaml" />
+	<configuration doc:name="Configuration" doc:id="16246888-7de1-409d-88df-8645326c74f8" defaultErrorHandler-ref="template-errorrError_Handler" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="1d44c4ad-527f-4c63-868c-b14d72b177cd" file="config/${env}/template-sys-api-${env}-secure.yaml" key="${encryption.key}" >
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
+	<json-logger:config name="JSON_Logger_Config" doc:name="JSON Logger Config" doc:id="4e268bd9-3fa7-4405-a98a-45688b908541" environment="${env}"/>
+	<api-gateway:autodiscovery apiId="16330087" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="6f02939a-3803-451b-be92-c103f5422b59" flowRef="template-sys-api-main" />
+	
+</mule>

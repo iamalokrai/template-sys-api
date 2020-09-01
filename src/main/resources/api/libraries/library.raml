@@ -1,0 +1,32 @@
+#%RAML 1.0 Library
+
+traits:
+  client-credentials: !include ../traits/client-id-required.raml
+  standardResponse: !include ../traits/standardResponse.raml
+  standardRequestResponse: !include ../traits/standardRequestResponse.raml
+  contentType: !include ../traits/content-type-header.raml
+  correlationId: !include ../traits/correlation-id.raml
+  pagination: !include ../traits/pagination.raml
+  
+types:
+  get-response: !include ../dataTypes/get-response.raml
+  post-request: !include ../dataTypes/post-request.raml
+  post-response: !include ../dataTypes/post-response.raml
+  shallow: !include ../dataTypes/shallow.raml
+  deep: !include ../dataTypes/deep.raml
+
+resourceTypes:
+  availabilityCheckerEndpoint:
+    usage: This resourceType is used for availability checker endpoint
+    get:
+      queryParameters:
+        dependent:
+          description: If the dependent is false, will return status of deployed API in shallow structure. If the dependent is true, it will return avaliblity statuses of dependent systems in the array of deep structure. In here, avaliblity means whether existing API has been able to succefully make TCP/IP socket connection or HTTP(s) connection to underlying system. 
+          type: boolean
+          default: false
+      responses:
+        200:
+          body:
+            application/json:
+              type: deep [] | shallow
+

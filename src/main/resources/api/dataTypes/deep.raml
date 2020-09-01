@@ -1,0 +1,33 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  host:
+    type: string
+    example: "products.db2.org"
+    required: false
+    description: If dependentEndpointType is SOCKET, then host is provided in response   
+  port:
+    type: number
+    example: 8093
+    required: false
+    description: If dependentEndpointType is SOCKET, then host is provided in response 
+  numberOfProbs: 
+    type: number
+    example: 3
+    required: true  
+  url:
+   type: string
+   required: false
+   description:  If dependentEndpointType is API, then URL is provided in response
+  dependentEndpointType:
+    type: !include dependent-endpoint-enum.raml
+    required: true
+  dependentEndpointName:
+    type: string
+    required: true  
+  probes:
+    type: array
+    items: !include probes.raml
+
+examples:
+  example : !include ../examples/deep-example.json

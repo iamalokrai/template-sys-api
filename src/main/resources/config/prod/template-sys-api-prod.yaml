@@ -1,0 +1,20 @@
+autodiscovery:
+  apiId: "0000"
+  
+json:
+  logger:
+    disabledFields: ""
+    
+application:
+  name: "template-sys-api-prod"
+  
+# Make it true to create Cloudhub alerts.
+email:
+  alerts: "true"
+
+# Make it true to print payload in email notification flow logs
+print:
+  payload: "true"
+# Anypoint Platform environment Id  
+cloudhub:
+  envId: ""

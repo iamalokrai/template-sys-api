@@ -1,0 +1,24 @@
+http:
+  private:
+    port: "8091"
+    timeout: "40000"
+    path: /api/v1/template/sys/*
+    
+json:
+  logger:
+    application:
+      name: "template-sys-api-dev"
+      version: "1.0.0"
+    prettyPrint: "true"
+    locationInfo: "false"
+    
+application:
+  domain: "capgemini"
+  source: "postman"
+  
+api:
+ availability:
+   status: "Up"
+   message: "API is up and running"
+ name: "template-sys-api"
+ version: "1.0.0"

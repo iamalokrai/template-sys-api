@@ -1,0 +1,10 @@
+#%RAML 1.0 Trait
+
+headers: 
+  correlationId:
+    description: | 
+      A UUID to track API calls end-to-end through multiple systems. It can be passed from one API(e.g. PAPI) to another API (SAPI) for tracking a message.
+    pattern: ^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$
+    type: string
+    required: false
+    example: 123e4567-e89b-12d3-a456-426655440000

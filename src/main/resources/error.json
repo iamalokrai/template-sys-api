@@ -1,0 +1,111 @@
+{
+    "default": {
+        "httpStatus": 500,
+        "outboundHeaders": {"correlation-id" : "#[vars.correlationId]","Access-Control-Allow-Origin": "*"},
+        "error": {
+            "status": {
+                "code": "500",
+                "type": "Internal Server Error",
+                "message": "Api Call Failed",
+                "errors": 
+                    {
+                        "code": "3500",
+                        "type": "InternalServerErrorException",
+                        "message": "#[error.description]",
+                        "service": "#[p('application.name')]"
+                    }
+            }
+        }
+    },
+    "3503": {
+        "httpStatus": 503,
+        "outboundHeaders": {"correlation-id" : "#[vars.correlationId]","Access-Control-Allow-Origin": "*"},
+        "error": {
+            "status": {
+                "code": "503",
+                "type": "Service Unavailable",
+                "message": "Api Call Failed",
+                "errors": 
+                    {
+                        "code": "3503",
+                        "type": "ServiceUnavailableException",
+                        "message": "#[error.description]",
+                        "service": "#[p('application.name')]"
+                    }
+            }
+        }
+    },
+    "3405": {
+        "httpStatus": 405,
+        "outboundHeaders": {"correlation-id" : "#[vars.correlationId]","Access-Control-Allow-Origin": "*"},
+        "error": {
+            "status": {
+                "code": "405",
+                "type": "Method Not Allowed",
+                "message": "Api Call Failed",
+                "errors": 
+                    {
+                        "code": "3405",
+                        "type": "MethodNotAllowedException",
+                        "message": "#[error.description]",
+                        "service": "#[p('application.name')]"
+                    }
+            }
+        }
+    },
+    "3404": {
+        "httpStatus": 404,
+        "outboundHeaders": {"correlation-id" : "#[vars.correlationId]","Access-Control-Allow-Origin": "*"},
+        "error": {
+            "status": {
+                "code": "404",
+                "type": "Not Found",
+                "message": "Api Call Failed",
+                "errors":
+                    {
+                        "code": "3404",
+                        "type": "NotFoundException",
+                        "message": "#[error.description]",
+                        "service": "#[p('application.name')]"
+                    }
+            }
+        }
+    },
+    "3401": {
+        "httpStatus": 401,
+        "outboundHeaders": {"correlation-id" : "#[vars.correlationId]","Access-Control-Allow-Origin": "*"},
+        "error": {
+            "status": {
+                "code": "401",
+                "type": "Unauthorized",
+                "message": "Api Call Failed",
+                "errors":
+                    {
+                        "code": "3401",
+                        "type": "UnauthorizedException",
+                        "message": "#[error.description]",
+                        "service": "#[p('application.name')]"
+                    }
+            }
+        }
+    },
+    "3400": {
+        "httpStatus": 400,
+        "outboundHeaders": {"correlation-id" : "#[vars.correlationId]","Access-Control-Allow-Origin": "*"},
+        "error": {
+            "status": {
+                "code": "400",
+                "type": "Bad Request",
+                "message": "Api Call Failed",
+                "errors":
+                    {
+                        "code": "3400",
+                        "correlation-id" : "#[vars.correlationId]",
+                        "type": "BadRequestException",
+                        "message": "#[error.description]",
+                        "service": "#[p('application.name')]"
+                    }
+            }
+        }
+    }
+}

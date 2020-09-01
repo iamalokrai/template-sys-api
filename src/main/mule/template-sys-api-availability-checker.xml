@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:mule-availability-checker-connector="http://www.mulesoft.org/schema/mule/mule-availability-checker-connector"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/mule-availability-checker-connector http://www.mulesoft.org/schema/mule/mule-availability-checker-connector/current/mule-mule-availability-checker-connector.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="template-sys-api-availability-checkerFlow" doc:id="b5d6ebb1-41d1-448a-96a4-3deb1dbae35c" >
+		<choice doc:name="Choice" doc:id="a921ad2c-6f27-44a8-8505-db374a1fb1d3" >
+			<when expression="#[attributes.queryParams.dependent == 'false']">
+				<mule-availability-checker-connector:shallow-availability-checker doc:name="Shallow availability checker" doc:id="f233548c-593d-4717-9a55-1ddb75985f33" />
+			</when>
+			<when expression="#[attributes.queryParams.dependent == 'true']">
+				<mule-availability-checker-connector:deep-availability-checker doc:name="Deep availability checker" doc:id="b5526f65-cc98-4655-b683-cdd87652c280" />
+			</when>
+		</choice>
+	</flow>
+</mule>

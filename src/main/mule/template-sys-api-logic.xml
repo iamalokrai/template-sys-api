@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
+	<flow name="get:\sample:template-sys-api-config">
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  status: {
+    code: 200,
+    message: "Success"
+  }
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+		<json-logger:logger doc:name="endLogger" doc:id="a8400b4a-38af-4399-9262-8f96f1ae39da" message="END Logger" config-ref="JSON_Logger_Config" correlationId="#[vars.correlationId]">
+			<json-logger:content ><![CDATA[#[import modules::JSONLoggerModule  output application/json ---
+{
+    payload: JSONLoggerModule::stringifyNonJSON(payload)
+}]]]></json-logger:content>
+		</json-logger:logger>
+    
+</flow>
+    <flow name="post:\sample:application\json:template-sys-api-config">
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+		<json-logger:logger doc:name="endLogger" doc:id="0ad81f8a-47fc-438e-96ab-3d2f764a4fea" message="End Logger" config-ref="JSON_Logger_Config" correlationId="#[vars.correlationId]"/>
+    
+</flow>
+<flow name="get:\availability:template-sys-api-config">
+		<flow-ref doc:name="Flow Reference" doc:id="962371ca-fd6e-4a01-89af-fae4b712b2b1" name="template-sys-api-availability-checkerFlow"/>
+
+    </flow>
+	</mule>

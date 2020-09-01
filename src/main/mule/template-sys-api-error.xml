@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
+	<error-handler name="template-errorrError_Handler" doc:id="7b93e7c3-ecec-437d-8d05-bda669afc45a" >
+		<on-error-propagate type="APIKIT:BAD_REQUEST">
+				<set-variable value='#["3400"]' doc:name="SetResultCode" doc:id="a9e90956-e72e-465a-a6b6-673ea8c18704" variableName="resultCode"/>
+				<flow-ref doc:name="setCustomeErrorMessageSubflow" doc:id="78b6a7ea-2648-4b2f-a4c0-4eb41661f828" name="setCustomeErrorMessageSubflow"/>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+				<set-variable value='#["3404"]' doc:name="SetResultCode" doc:id="0a098742-5cb0-4535-9baa-5b5e53e264d7" variableName="resultCode"/>
+				<flow-ref doc:name="setCustomeErrorMessageSubflow" doc:id="1b2bb9cd-fda4-4212-b919-4318c4e65cb8" name="setCustomeErrorMessageSubflow"/>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
+				<set-variable value='#["3405"]' doc:name="SetResultCode" doc:id="542dc988-e373-4499-8f3e-d83085ba8ab1" variableName="resultCode"/>
+				<flow-ref doc:name="setCustomeErrorMessageSubflow" doc:id="dccc685d-9a18-47a8-9a59-0cff85a7878f" name="setCustomeErrorMessageSubflow"/>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
+				<set-variable value='#[""]' doc:name="SetResultCode" doc:id="df28554d-3855-4a47-a2af-c6c7842e3c44" variableName="resultCode"/>
+				<flow-ref doc:name="setCustomeErrorMessageSubflow" doc:id="3759ba59-68d6-4857-9918-09fa092750fb" name="setCustomeErrorMessageSubflow"/>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+				<set-variable value='#["3400"]' doc:name="SetResultCode" doc:id="6534e95a-5ce1-4726-ae86-68679f98122b" variableName="resultCode"/>
+				<flow-ref doc:name="setCustomeErrorMessageSubflow" doc:id="8c4537b2-3ff8-4e58-8e55-f857b8fdf79f" name="setCustomeErrorMessageSubflow"/>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
+				<set-variable value='#["3400"]' doc:name="SetResultCode" doc:id="310c04a6-6fcc-4b1a-a57f-21e0efdf8c8b" variableName="resultCode"/>
+				<flow-ref doc:name="setCustomeErrorMessageSubflow" doc:id="f5345087-321d-42bf-a24e-bc63e8184cff" name="setCustomeErrorMessageSubflow"/>
+            </on-error-propagate>
+	</error-handler>
+	<sub-flow name="setCustomeErrorMessageSubflow" doc:id="33208e1c-889a-48d8-939e-d8724f755c99" >
+		<parse-template doc:name="Parse Template" doc:id="5b390273-fcb5-41a3-b878-dcd36bea25d6" location="error.json" target="errorDetails" targetValue="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="b03dc436-3dce-4cf0-b384-bef9ae4278c8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var errorCode = if (vars.resultCode != null and vars.resultCode != "") vars.resultCode as String else "default"
+---
+vars.errorDetails[errorCode].error]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
+output application/java
+var errorCode = if (vars.resultCode != null and vars.resultCode != "") vars.resultCode as String else "default"
+---
+vars.errorDetails[errorCode].httpStatus]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<json-logger:logger doc:name="Logger" doc:id="b1c7bf8b-2e02-4f36-8bbf-bceeefb11950" config-ref="JSON_Logger_Config" message="Error Logger" tracePoint="END"/>
+	</sub-flow>
+</mule>

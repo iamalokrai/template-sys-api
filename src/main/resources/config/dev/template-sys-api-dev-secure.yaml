@@ -1,0 +1,5 @@
+# Anypoint Platform credentials
+cloudhub:
+  username: "user"
+  password: "pass"
+  
